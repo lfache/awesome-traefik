@@ -58,9 +58,11 @@ The compose file defines an application *WordPress* with two services `database`
 Database used is `mysql:5.7`, this in order to correspond to the official documentation. You can use `mariadb:10` instead of mysql.
 When deploying the application, docker-compose use secrets to store sensitive data like password or database information. This stack use *Traefik* network and service as reverse-proxy.
 
-## Prerequisites
+## Prerequisites
 
 Launch *Traefik* first. Please refer at `README.md` [here](https://github.com/lfache/awesome-traefik/blob/master/README.md) for more information.
+
+Modify secrets with your own password.
 
 ## Deploy with docker-compose
 

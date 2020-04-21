@@ -14,7 +14,7 @@ These instructions will get you through the bootstrap phase of creating and depl
   - Linux: [Install Docker](https://www.docker.com/get-started) and then
     [Docker Compose](https://github.com/docker/compose)
 - Download some or all of the samples from this repository.
-- Launch Traefik first 
+- Launch Traefik first. 
 
 ### Launch Traefik
 - It is also necessary to launch an instance of Traefik beforehand. You can find the docker-compose file here :
@@ -24,7 +24,6 @@ These instructions will get you through the bootstrap phase of creating and depl
   
   
 ### Running a sample
-
 
 The root directory of each sample contains the `docker-compose.yaml` which
 describes the configuration of service components. All samples can be run in

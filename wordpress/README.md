@@ -60,7 +60,7 @@ When deploying the application, docker-compose use secrets to store sensitive da
 
 ## Prerequisites
 
-Launch *Traefik* first. Please refer at `README.md`[here]() for more information.
+Launch *Traefik* first. Please refer at `README.md` [here](https://github.com/lfache/awesome-traefik/blob/master/README.md) for more information.
 
 ## Deploy with docker-compose
 
@@ -99,7 +99,7 @@ b2c95cb59ba3        traefik:2.2         "/entrypoint.sh trae…"   14 minutes ag
 
 After the application starts, navigate to `https://wordpress.mydomain.com` in your web browser to access wordpress installation:
 
-![page](output.jpg)
+![page](output.png)
 
 Stop and remove the containers
 ```

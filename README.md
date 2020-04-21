@@ -18,9 +18,9 @@ These instructions will get you through the bootstrap phase of creating and depl
 
 ### Launch Traefik
 - It is also necessary to launch an instance of Traefik beforehand. You can find the docker-compose file here :
-  - Traefik HTTPS with let's encrypt, ssl redirection and by default some security headers :
-    [Traefik service](https://github.com/lfache/awesome-traefik/blob/master/traefik/) Check the README.md of each sample to get more details 
-  
+  - Traefik HTTPS with let's encrypt, ssl redirection and by default some security headers:
+    [Traefik service](https://github.com/lfache/awesome-traefik/blob/master/traefik/) 
+      
 ### Running a sample
 
 The root directory of each sample contains the `docker-compose.yaml` which

@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  reverse_proxy:
+    image: traefik:2.2
+    restart: unless-stopped
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The HTTPS port
+      - "443:443"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      # traefik static configuration
+      - ./traefik.yaml:/etc/traefik/traefik.yaml:ro
+      # custom folder with dynamic configuration
+      - ./custom:/etc/traefik/custom:ro
+      # ssl volumes to store acme.json
+      - certs:/letsencrypt
+    networks:
+      - web
+
+volumes:
+  certs:
+
+networks:
+  web:
+    name: traefik_web

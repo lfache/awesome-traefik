@@ -1,0 +1,33 @@
+entryPoints:
+  web:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: :443
+    http:
+      tls:
+        certResolver: myresolver
+      middlewares:
+      - SecHeaders@file
+
+accessLog: {}
+
+providers:
+  docker:
+    exposedByDefault: false
+
+  file:
+    directory: /etc/traefik/custom/
+    watch: true
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: "foo.bar@mydomain.com"
+      storage: "/letsencrypt/acme.json"
+      tlsChallenge: {}

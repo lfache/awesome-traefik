@@ -3,8 +3,7 @@ services:
     # Frontend
     web:
         image: jitsi/web
-        container_name: jitsi_front
-        restart: unless-stopped
+        restart: ${RESTART_POLICY}
         volumes:
             - ${CONFIG}/web:/config
             - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
@@ -36,14 +35,13 @@ services:
             - JIBRI_RECORDER_PASSWORD
             - ENABLE_RECORDING
         networks:
-            # traefik: change the following line to your external docker network 
-            traefik:
+            traefik_web:
             meet.jitsi:
                 aliases:
                     - ${XMPP_DOMAIN}
         labels:
             traefik.enable: true
-            traefik.docker.network: traefik
+            traefik.docker.network: traefik_web
             traefik.http.routers.jitsi.entrypoints: websecure
             traefik.http.routers.jitsi.rule: 'Host(`jitsi.mydomain.com`)'
             traefik.http.services.jitsi.loadbalancer.server.port: 80
@@ -51,14 +49,14 @@ services:
     # XMPP server
     prosody:
         image: jitsi/prosody
-        container_name: jitsi_prosody
-        restart: unless-stopped
+        restart: ${RESTART_POLICY}
         expose:
             - '5222'
             - '5347'
             - '5280'
         volumes:
-            - ${CONFIG}/prosody:/config
+            - ${CONFIG}/prosody/config:/config
+            - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom
         environment:
             - AUTH_TYPE
             - ENABLE_AUTH
@@ -116,8 +114,7 @@ services:
     # Focus component
     jicofo:
         image: jitsi/jicofo
-        container_name: jitsi_jicofo
-        restart: unless-stopped
+        restart: ${RESTART_POLICY}
         volumes:
             - ${CONFIG}/jicofo:/config
         environment:
@@ -132,6 +129,7 @@ services:
             - JICOFO_RESERVATION_REST_BASE_URL
             - JVB_BREWERY_MUC
             - JIGASI_BREWERY_MUC
+            - JIGASI_SIP_URI
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
             - TZ
@@ -143,11 +141,10 @@ services:
     # Video bridge
     jvb:
         image: jitsi/jvb
-        container_name: jitsi_jvb
-        restart: unless-stopped
+        restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
-            - '${JVB_TCP_PORT}:${JVB_TCP_PORT}'
+            - '${JVB_TCP_MAPPED_PORT}:${JVB_TCP_PORT}'
         volumes:
             - ${CONFIG}/jvb:/config
         environment:
@@ -172,6 +169,5 @@ services:
 # Custom network so all services can communicate using a FQDN
 networks:
     meet.jitsi:
-    # traefik: change the following line to your external docker network 
     traefik_web:
-        external: true
+      external: true

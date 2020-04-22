@@ -39,7 +39,7 @@ For more information about *Jitsi Meet* : [https://github.com/jitsi/jitsi-meet/b
 
 Launch *Traefik* first. Please refer at `README.md` [here](https://github.com/lfache/awesome-traefik/blob/master/README.md) for more information.
 
-Modify ![page](env.examples) with your own password.
+Modify [env.examples](env.examples) with your own password.
 
 ## Deploy with docker-compose
 

@@ -81,7 +81,7 @@ Moved Permanently
 or 
 ```
 $ curl localhost:443
-
+404 page not found
 ```
 
 Stop and remove the containers

@@ -41,5 +41,5 @@ docker-compose down
 <!--lint disable awesome-toc-->
 ## Contribute
 
-We welcome examples that help people understand how to use Docker Compose for
+We welcome examples that help people understand how to use Traefik with Docker Compose for
 common applications. 

@@ -44,6 +44,10 @@ services:
       # remove Server and X-Powered-By headers
       traefik.http.middlewares.wp-headers.headers.customresponseheaders.Server: ''
       traefik.http.middlewares.wp-headers.headers.customresponseheaders.X-Powered-By: ''
+      # add some sec headers
+      traefik.http.middlewares.wp-headers.headers.contentsecuritypolicy: "default-src 'self' data: ; script-src 'self' 'unsafe-inline' ; style-src 'self' 'unsafe-inline' fonts.googleapis.com https://code.jquery.com ; font-src 'self' fonts.gstatic.com data: ; img-src 'self' data: https://code.jquery.com"
+      traefik.http.middlewares.wp-headers.headers.referrerpolicy: "same-origin"
+      traefik.http.middlewares.wp-headers.headers.featurepolicy: "vibrate 'self'; geolocation 'self'; midi 'self'; notifications 'self'; push 'self'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'self'; fullscreen 'self'"
       traefik.http.routers.wordpress.middlewares: 'wp-headers'
       # whitelist access to /wp-admin, replace X.X.X.X with your public IP  
       # if you dont need restrict wp-admin, remove or comment next lines   
@@ -51,7 +55,6 @@ services:
       traefik.http.routers.wordpress-admin.rule: 'Host(`wordpress.mydomain.com`) && (Path(`/wp-admin`)|| Path(`/wp-login.php`))'
       traefik.http.routers.wordpress-admin.middlewares: 'wp-ipwhitelist'
       
-
 volumes:
   db:
   html:
@@ -61,7 +64,6 @@ networks:
     external: true
 
   lan:
-    name: wordpress_lan
 
 secrets:
   mysql-user:

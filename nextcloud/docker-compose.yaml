@@ -1,0 +1,67 @@
+version: '3.7'
+services:
+  database:
+    image: mariadb:10
+    restart: unless-stopped
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_USER_FILE: '/run/secrets/mysql-user'
+      MYSQL_DATABASE_FILE: '/run/secrets/mysql-database'
+      MYSQL_PASSWORD_FILE: '/run/secrets/mysql-password'
+    secrets:
+      - mysql-user
+      - mysql-database
+      - mysql-password
+    networks:
+      - lan 
+    volumes: 
+      - db:/var/lib/mysql
+
+  nextcloud:
+    depends_on:
+      - database
+    image: nextcloud:18
+    restart: unless-stopped
+    environment:
+      MYSQL_HOST: 'database'
+      MYSQL_DATABASE_FILE: '/run/secrets/mysql-database'
+      MYSQL_USER_FILE: '/run/secrets/mysql-user'
+      MYSQL_PASSWORD_FILE: '/run/secrets/mysql-password'
+      NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
+      NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
+      NEXTCLOUD_TRUSTED_DOMAINS: ${NEXTCLOUD_URL}
+    secrets:
+      - mysql-user
+      - mysql-database
+      - mysql-password
+    networks:
+      - lan
+      - traefik_web
+    volumes:
+      - html:/var/www/html
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik_web
+      traefik.http.routers.nextcloud.entrypoints: web
+      traefik.http.routers.nextcloud.rule: 'Host(`${NEXTCLOUD_URL}`)'
+      traefik.http.services.nextcloud.loadbalancer.server.port: 80
+      
+volumes:
+  db:
+  html:
+
+networks:
+  traefik_web:
+    external: true
+
+  lan:
+
+secrets:
+  mysql-user:
+    file: ./secrets/mysql-user.txt
+
+  mysql-database:
+    file: ./secrets/mysql-database.txt
+
+  mysql-password:
+    file: ./secrets/mysql-password.txt

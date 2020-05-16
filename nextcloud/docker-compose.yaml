@@ -42,7 +42,7 @@ services:
     labels:
       traefik.enable: true
       traefik.docker.network: traefik_web
-      traefik.http.routers.nextcloud.entrypoints: web
+      traefik.http.routers.nextcloud.entrypoints: websecure
       traefik.http.routers.nextcloud.rule: 'Host(`${NEXTCLOUD_URL}`)'
       traefik.http.services.nextcloud.loadbalancer.server.port: 80
       

@@ -1,5 +1,5 @@
 ## Netxcloud sample configuration
-### Nextcloud blog examples with traefik
+### Nextcloud examples with traefik
 
 Project structure:
 ```

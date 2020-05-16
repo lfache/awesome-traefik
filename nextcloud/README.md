@@ -67,7 +67,7 @@ Launch *Traefik* first. Please refer at `README.md` [here](https://github.com/lf
 Modify secrets with your own password or use `./gen-secrets.sh`.
 
 ## Deploy with docker-compose
-This repository uses environment variables to pass NEXTCLOUD_URL, NEXTCLOUD_ADMIN_USER, NEXTCLOUD_ADMIN_PASSWORD to your stack.
+This repository uses environment variables to pass `NEXTCLOUD_URL`, `NEXTCLOUD_ADMIN_USER`, `NEXTCLOUD_ADMIN_PASSWORD` to your stack.
 
 ```
 $ NEXTCLOUD_URL=nextcloud.mydomain.com NEXTCLOUD_ADMIN_USER=admin NEXTCLOUD_ADMIN_PASSWORD=mypassword docker-compose up 

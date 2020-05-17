@@ -2,6 +2,7 @@ version: '3.7'
 services:
   database:
     image: mariadb:10
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'

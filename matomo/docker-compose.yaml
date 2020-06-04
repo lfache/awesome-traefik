@@ -1,0 +1,42 @@
+version: "3.7"
+services:
+  db:
+    image: mariadb:10
+    command: --max-allowed-packet=64MB
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    env_file:
+      - ./.mysql.env
+    networks:
+      - lan 
+
+  app:
+    image: matomo:3
+    restart: unless-stopped
+    volumes:
+      - matomo:/var/www/html
+    environment:
+      VIRTUAL_HOST: ${MATOMO_URL}
+    env_file:
+      - ./.matomo.env
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik_web
+      traefik.http.services.matomo.loadbalancer.server.port: 80
+      traefik.http.routers.matomo.rule: Host(`${MATOMO_URL}`)
+      traefik.http.routers.matomo.entrypoints: websecure
+    networks:
+      - lan
+      - traefik_web
+
+volumes:
+  db:
+  matomo:
+
+networks:
+  traefik_web:
+    name: traefik_web
+  lan:

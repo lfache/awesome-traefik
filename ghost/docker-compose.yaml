@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  db:
+    image: mariadb:10
+    restart: unless-stopped
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    env_file:
+      - .mysql.env
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks: 
+      - lan
+
+  app:
+    image: ghost:3
+    restart: unless-stopped
+    environment:
+      url: https://${GHOST_URL}
+    env_file:
+      - .ghost.env
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik_web
+      traefik.http.services.ghost.loadbalancer.server.port: 2368
+      traefik.http.routers.ghost.rule: Host(`${GHOST_URL}`)
+      traefik.http.routers.ghost.entrypoints: websecure
+    volumes:
+      - www-data:/var/lib/ghost/content
+    networks:
+      - traefik_web
+      - lan
+
+volumes:
+  mysql-data:
+  www-data:
+
+networks:
+  lan:
+
+  traefik_web:
+    external: true

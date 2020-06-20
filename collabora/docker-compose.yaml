@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  collabora:
+    image: collabora/code
+    restart: unless-stopped
+    environment:
+      domain: nextcloud\\.mydomain\\.com
+      username: ${COLLABORA_ADMIN_USER}
+      password: ${COLLABORA_ADMIN_PASSWORD}
+      extra_params: --o:ssl.enable=false  --o:ssl.termination=true
+    cap_add:
+      - MKNOD
+    networks:
+      - traefik_web
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik_web
+      traefik.http.routers.collabora.entrypoints: websecure
+      traefik.http.routers.collabora.rule: 'Host(`${COLLABORA_URL}`)'
+      traefik.http.services.collabora.loadbalancer.server.port: 9980
+      
+networks:
+  traefik_web:
+    external: true
